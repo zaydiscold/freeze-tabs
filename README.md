@@ -19,11 +19,29 @@ Click the toolbar icon for a four-button popup:
 It calls `chrome.tabs.discard()`. Chrome unloads the page from memory but keeps
 the tab in the strip; the page reloads automatically the next time you focus it.
 Tabs that refuse to discard (`chrome://` pages, tabs holding a media stream) are
-skipped automatically. The toolbar badge shows how many tabs were frozen.
+skipped automatically.
 
-> **Chrome rule:** every window must keep exactly one visible, loaded tab — the
-> active tab can't be discarded while it's on screen. "Freeze this tab" works
-> around this by hopping focus to a neighbor first.
+The popup shows a **live count** — `frozen / total`, how many are still loaded,
+and how many must stay visible — and updates after every click, so you can
+actually see it working. The toolbar badge shows how many tabs are still loaded
+(`0` = everything that can be frozen is frozen).
+
+## How it's verified (and two Chrome gotchas it handles)
+
+- **`discard()` changes the tab's id.** Chrome swaps in a fresh tab object, so
+  the resolved tab has a *different* id than the one you passed. Looking a tab
+  up by its old id after discarding throws "No tab with id". This extension
+  never relies on the old id — it reports freezes as the **net change in how
+  many tabs are discarded** (snapshot before vs. after), which is accurate even
+  with the id swap and even when switching off the active tab reloads a neighbor.
+- **Every window keeps one visible, loaded tab.** The active tab can't be
+  discarded while it's on screen, so the floor of loaded tabs equals your number
+  of windows. "Freeze this tab" (and "Freeze all tabs") work around it for the
+  current window by hopping focus to a neighbor first. If most of your tabs are
+  already frozen, clicking freeze again correctly reports "already frozen" rather
+  than pretending to do something.
+- **Scale.** Freezing is done in chunks (40 at a time) so it stays reliable even
+  across hundreds of tabs and dozens of windows.
 
 ## Why zero permissions
 

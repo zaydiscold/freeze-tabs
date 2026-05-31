@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Freeze Tabs",
-  "version": "1.1.0",
-  "description": "Freeze (discard) tabs to free memory — this tab, everything but this tab, all tabs, or all tabs in this window. Frozen tabs reload when clicked.",
+  "version": "1.2.0",
+  "description": "Freeze (discard) tabs to free memory — this tab, everything but this tab, all tabs, or all tabs in this window. Live frozen/loaded counts so you can see it work. Frozen tabs reload when clicked.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "Freeze tabs"
