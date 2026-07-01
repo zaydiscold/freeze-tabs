@@ -67,4 +67,26 @@ in `manifest.json` — check it yourself.
 - Freezing runs in chunks of 40 so it stays reliable across ~1400 tabs and dozens of
   windows.
 
-Do whatever you want with it. — [@zaydiscold](https://github.com/zaydiscold)
+---
+
+<p align="center">
+  <a href="https://github.com/zaydiscold"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-zaydiscold-181717?style=for-the-badge&logo=github"></a>
+  <a href="https://twitter.com/ColdCooks"><img alt="X / Twitter" src="https://img.shields.io/badge/X-@ColdCooks-000000?style=for-the-badge&logo=x"></a>
+  <a href="https://zayd.wtf"><img alt="Website" src="https://img.shields.io/badge/Web-zayd.wtf-FF4D8D?style=for-the-badge"></a>
+</p>
+
+<p align="center"><strong>Built by Zayd Khan // cold</strong> (<a href="https://twitter.com/ColdCooks">@ColdCooks</a> / <a href="https://github.com/zaydiscold">zaydiscold</a> / <a href="https://zayd.wtf">zayd.wtf</a>).</p>
+
+---
+
+> **`*** SYSTEM NOTIFICATION ***`**
+>
+> Congratulations, Operator. You reached the bottom of the README — most had it discarded from memory three screens ago.
+>
+> *Achievement unlocked — "Cold Storage."* You hold a zero-permission kill switch for 1,400 tabs of your own hoarding. The System notes your RAM fans have stopped screaming.
+>
+> *A browser is only as fast as the tabs you're willing to let go of. Freeze on purpose.*
+>
+> **Loot dropped:** one (1) tiny MV3 extension that never once read your URLs. *Discard freely. Reload on focus. Try not to open 1,553 more.*
+
+<!-- Zayd Khan // cold // www.zayd.wtf -->
