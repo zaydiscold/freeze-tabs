@@ -1,8 +1,6 @@
 # Freeze Tabs
 
-> **Made this because I had ~1400 tabs open and Chrome was choking on the RAM.** I
-> couldn't find a tab suspender I trusted with that few permissions, so I built one
-> at home in an afternoon. That's the whole story.
+> made this cuz i needed to freeze 1400 tabs
 
 `remake your own extensions #ownit`
 
