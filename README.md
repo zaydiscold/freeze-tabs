@@ -8,6 +8,8 @@ A tiny **Manifest V3** Chrome extension that freezes tabs (unloads them from mem
 — on click, or automatically when they go idle. By default it can't read your URLs,
 titles, or page content.
 
+![Freeze Tabs popup — 1431 of 1553 tabs frozen](screenshot.png)
+
 ## What it does
 
 Click the toolbar icon → four buttons:
