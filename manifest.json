@@ -1,14 +1,29 @@
 {
   "manifest_version": 3,
   "name": "Freeze Tabs",
-  "version": "1.2.0",
-  "description": "Freeze (discard) tabs to free memory — this tab, everything but this tab, all tabs, or all tabs in this window. Live frozen/loaded counts so you can see it work. Frozen tabs reload when clicked.",
+  "version": "1.3.0",
+  "description": "Freeze (discard) tabs to free memory — manually or automatically when idle. Pin a tab to protect it; skip audio tabs; keyboard shortcuts. Reads only tab ids by default — no access to your URLs.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "Freeze tabs"
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "permissions": ["alarms", "storage"],
+  "optional_permissions": ["scripting"],
+  "optional_host_permissions": ["<all_urls>"],
+  "commands": {
+    "freeze-this": {
+      "suggested_key": { "default": "Ctrl+Shift+E", "mac": "Command+Shift+E" },
+      "description": "Freeze this tab"
+    },
+    "freeze-others": { "description": "Freeze everything but this tab" },
+    "freeze-window": { "description": "Freeze all tabs in this window" },
+    "freeze-all": {
+      "suggested_key": { "default": "Ctrl+Shift+Y", "mac": "Command+Shift+Y" },
+      "description": "Freeze all tabs"
+    }
   },
   "icons": {
     "16": "icons/icon16.png",

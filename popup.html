@@ -32,18 +32,8 @@
       }
       h1 .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); }
 
-      /* Live status panel */
-      #panel {
-        background: var(--panel);
-        border-radius: 8px;
-        padding: 9px 11px;
-        margin-bottom: 10px;
-      }
-      #headline {
-        font-size: 15px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-      }
+      #panel { background: var(--panel); border-radius: 8px; padding: 9px 11px; margin-bottom: 10px; }
+      #headline { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
       #headline b { color: var(--blue-dark); }
       #sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
@@ -68,14 +58,20 @@
       button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
       button.primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
 
-      #status {
-        margin-top: 10px;
-        min-height: 16px;
-        font-size: 12px;
-        color: var(--muted);
-        text-align: center;
-      }
+      #status { margin-top: 10px; min-height: 16px; font-size: 12px; color: var(--muted); text-align: center; }
       #status.ok { color: var(--blue-dark); font-weight: 600; }
+
+      details#settings { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+      details#settings summary { font-size: 12px; font-weight: 600; color: var(--ink); cursor: pointer; list-style: none; }
+      details#settings summary::-webkit-details-marker { display: none; }
+      details#settings summary::before { content: "▸ "; color: var(--muted); }
+      details#settings[open] summary::before { content: "▾ "; }
+      label.set { display: flex; align-items: center; gap: 7px; font-size: 12.5px; margin: 9px 0; cursor: pointer; }
+      label.set input { margin: 0; }
+      .indent { margin: -4px 0 6px 24px; font-size: 12px; color: var(--muted); }
+      .indent input { width: 50px; padding: 3px 5px; border: 1px solid var(--line); border-radius: 6px; font: inherit; }
+      .hint { font-size: 11px; color: var(--muted); margin: 8px 0 2px; line-height: 1.5; }
+      .hint a { color: var(--blue-dark); }
     </style>
   </head>
   <body>
@@ -92,6 +88,21 @@
     <button class="primary" data-action="FREEZE_ALL">Freeze all tabs</button>
 
     <div id="status"></div>
+
+    <details id="settings">
+      <summary>Auto-freeze &amp; settings</summary>
+      <label class="set"><input type="checkbox" id="auto" /> Auto-freeze idle tabs</label>
+      <div class="indent">after <input type="number" id="idle" min="1" max="1440" value="30" /> minutes idle</div>
+      <label class="set"><input type="checkbox" id="skipPinned" /> Never freeze pinned tabs</label>
+      <label class="set"><input type="checkbox" id="skipAudible" /> Never freeze tabs playing audio</label>
+      <label class="set"><input type="checkbox" id="protectForms" /> Protect tabs with unsaved text</label>
+      <p class="hint">
+        Pin a tab to keep it from ever auto-freezing — no URL access needed.<br />
+        "Unsaved text" protection asks for one-time permission to peek for typed-in
+        form fields before freezing.<br />
+        Set keyboard shortcuts at <a href="#" id="shortcuts">chrome://extensions/shortcuts</a>.
+      </p>
+    </details>
 
     <script src="popup.js"></script>
   </body>

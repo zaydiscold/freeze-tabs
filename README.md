@@ -1,66 +1,70 @@
-remake your own extensions #ownit
-
 # Freeze Tabs
 
-A tiny, zero-permission Chrome extension (Manifest V3) that **freezes tabs** to
-free up memory. Hand-rolled replacement for third-party tab suspenders.
+> **Made this because I had ~1400 tabs open and Chrome was choking on the RAM.** I
+> couldn't find a tab suspender I trusted with that few permissions, so I built one
+> at home in an afternoon. That's the whole story.
 
-Click the toolbar icon for a four-button popup:
+`remake your own extensions #ownit`
 
-| Button | What it freezes |
+A tiny **Manifest V3** Chrome extension that freezes tabs (unloads them from memory)
+— on click, or automatically when they go idle. By default it can't read your URLs,
+titles, or page content.
+
+## What it does
+
+Click the toolbar icon → four buttons:
+
+| Button | Freezes |
 | --- | --- |
-| **Freeze this tab** | The current tab (switches you to a neighbor first, since Chrome can't unload the visible tab). |
-| **Freeze everything but this tab** | Every tab in every window except the one you're looking at. |
-| **Freeze all tabs in this window** | Every tab in the current window except the one that must stay visible. |
-| **Freeze all tabs** | Everything everywhere, including the current tab. |
+| **Freeze this tab** | the tab you're on (hops to a neighbor first — Chrome won't unload the visible tab) |
+| **Freeze everything but this tab** | every other tab, across all windows |
+| **Freeze all tabs in this window** | just this window |
+| **Freeze all tabs** | everything, including the current one |
 
-## What "freeze" means
+"Freeze" = `chrome.tabs.discard()`: the page drops out of memory but stays in the
+strip and reloads the moment you click back to it. The popup shows a live
+`frozen / total` count and a badge, so you can actually watch it work.
 
-It calls `chrome.tabs.discard()`. Chrome unloads the page from memory but keeps
-the tab in the strip; the page reloads automatically the next time you focus it.
-Tabs that refuse to discard (`chrome://` pages, tabs holding a media stream) are
-skipped automatically.
+## Auto-freeze & settings (v1.3.0)
 
-The popup shows a **live count** — `frozen / total`, how many are still loaded,
-and how many must stay visible — and updates after every click, so you can
-actually see it working. The toolbar badge shows how many tabs are still loaded
-(`0` = everything that can be frozen is frozen).
+Open the settings panel in the popup:
 
-## How it's verified (and two Chrome gotchas it handles)
+- **Auto-freeze idle tabs** after N minutes — a once-a-minute alarm scans for stale
+  tabs (MV3-correct, survives the service worker sleeping).
+- **Pin = never freeze.** Pin your Gmail / music / calendar tab and auto-freeze
+  leaves it alone. Using *pinned* as the whitelist is deliberate: a URL-based
+  whitelist would need permission to read every tab's address, which is the exact
+  thing I didn't want this extension to have.
+- **Skip tabs playing audio.**
+- **Protect tabs with unsaved text** *(optional, off by default)* — only if you
+  flip this on does it ask for `scripting` access to peek a tab for typed-in form
+  text and skip freezing it.
+- **Keyboard shortcuts** — freeze this (`⌘/Ctrl+Shift+E`), freeze all
+  (`⌘/Ctrl+Shift+Y`). Rebind at `chrome://extensions/shortcuts`.
 
-- **`discard()` changes the tab's id.** Chrome swaps in a fresh tab object, so
-  the resolved tab has a *different* id than the one you passed. Looking a tab
-  up by its old id after discarding throws "No tab with id". This extension
-  never relies on the old id — it reports freezes as the **net change in how
-  many tabs are discarded** (snapshot before vs. after), which is accurate even
-  with the id swap and even when switching off the active tab reloads a neighbor.
-- **Every window keeps one visible, loaded tab.** The active tab can't be
-  discarded while it's on screen, so the floor of loaded tabs equals your number
-  of windows. "Freeze this tab" (and "Freeze all tabs") work around it for the
-  current window by hopping focus to a neighbor first. If most of your tabs are
-  already frozen, clicking freeze again correctly reports "already frozen" rather
-  than pretending to do something.
-- **Scale.** Freezing is done in chunks (40 at a time) so it stays reliable even
-  across hundreds of tabs and dozens of windows.
+## Permissions (this is the point)
 
-## Why zero permissions
-
-The manifest requests **no permissions and no host access**. We only read tab
-*ids*, and `tabs.discard` needs no permission, so there's nothing to grant —
-nothing to leak. Check `manifest.json` yourself.
+Default permissions are just **`alarms`** and **`storage`**. **No `tabs` permission,
+no host access** — so it literally can't see your URLs, titles, or pages. It reads
+tab *ids* and the non-sensitive `pinned` / `audible` / `active` flags, and
+`tabs.discard` itself needs no permission. The only way it ever gets more is if *you*
+turn on unsaved-text protection. Everything extra lives under `optional_permissions`
+in `manifest.json` — check it yourself.
 
 ## Install (load unpacked)
 
 1. Open `chrome://extensions`
 2. Toggle **Developer mode** on (top-right)
-3. Click **Load unpacked**
-4. Select this folder
+3. Click **Load unpacked** and pick this folder
+4. Pin it from the puzzle-piece menu
 
-Pin the icon from the puzzle-piece menu, then click it any time.
+## Nerdy bits it handles
 
-## Files
+- `discard()` swaps in a fresh tab with a **different id**, so freezes are counted by
+  the *net change* in discarded tabs, not by tracking old ids (which would throw).
+- Every window keeps one visible tab that can't be discarded, so "freeze all" hops
+  focus to a neighbor first.
+- Freezing runs in chunks of 40 so it stays reliable across ~1400 tabs and dozens of
+  windows.
 
-- `manifest.json` — MV3 manifest, popup, no permissions
-- `popup.html` / `popup.js` — the four-button UI; sends a message per action
-- `background.js` — service worker; does the discarding so it survives the popup closing
-- `generate_icons.py` — regenerates `icons/*.png` with stdlib only (no Pillow)
+Do whatever you want with it. — [@zaydiscold](https://github.com/zaydiscold)
